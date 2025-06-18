@@ -1,0 +1,44 @@
+.header {
+    /* height: 160px; */
+    padding: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.leftSide {
+    display: flex;
+}
+.rightSide {
+    display: flex;
+    gap: 2.75rem;
+}
+
+.rightSide a {
+    text-decoration: none;
+    color: black;
+    font-size: 1.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* .rightSide */
+
+.logo {
+    width: 16rem;
+}
+
+.title {
+    /* width: 16rem; */
+    background-color: #CB81FF;
+    margin: 0.5rem 0 0.5rem 3rem;
+    font-weight:600;
+    font-size: 1.8rem;
+    padding: 0 0.4rem;
+    line-height: 0;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.05rem;
+}

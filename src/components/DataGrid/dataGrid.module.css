@@ -1,0 +1,25 @@
+.dataGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 0.5rem 2.5rem;
+    margin-top: 2rem;
+}
+
+.gridItem {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.gridItem h3 {
+    margin: 0;
+    text-align: center;
+    font-size: 2rem;
+}
+
+.gridItem p {
+    margin: 0;
+    margin-top: 0.5rem;
+    text-align: center;
+}
