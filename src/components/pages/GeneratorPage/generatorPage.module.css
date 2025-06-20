@@ -8,9 +8,13 @@
 .title {
     margin: 0;
     font-size: 1.875rem;
+    margin-bottom: 1rem;
 }
 
-.uploadForm {
-    margin-top: 1rem;
-    margin-bottom: 3.6rem;
+.status {
+    margin-top: 0.5rem;
+}
+
+.label {
+    min-width: 0;
 }

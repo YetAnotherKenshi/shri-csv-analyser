@@ -1,0 +1,64 @@
+.buttonBlock {
+    display: flex;
+    gap: 0.5rem;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+.uploadButton, .label {
+    display: grid;
+    place-items: center;
+    padding: 0rem 2rem;
+    height: 4.5rem;
+    font-size: 2.1rem;
+    border-radius: 0.5rem;
+    font-weight: 400;
+    font-family: "Roboto";
+    letter-spacing: 0.02rem;
+    background-color: white;
+    width: fit-content;
+  }
+
+  .uploadButton {
+    min-width: 22rem
+  }
+  .label {
+    min-width: 16rem
+  }
+
+.purple {
+    background-color: #CB81FF;
+}
+
+.green {
+    background-color: #D4FAE6;
+}
+
+.orange {
+    background-color: #FF5F00;
+    color: white;
+}
+
+.deleteButton {
+    background-color: #201B10;
+    height: 4.5rem;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+}
+
+.spinner {
+    height: 3rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

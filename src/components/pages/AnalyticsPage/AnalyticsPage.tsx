@@ -1,54 +1,26 @@
-import { useEffect, useState, useRef } from "react";
-import UploadForm from "../../UploadForm/UploadForm";
+import { useEffect } from "react";
+import UploadForm from "../../layout/UploadForm/UploadForm";
 import styles from "./analyticsPage.module.css";
-import DataGrid from "../../DataGrid/DataGrid";
-
-interface DataMappingItem {
-    label: string;
-    type: "string" | "number" | "date";
-}
+import DataGrid from "../../layout/DataGrid/DataGrid";
+import Button from "../../ui/Button/Button";
+import { useAnalyticsStore } from "../../../store/analyticsStore";
+import { useHistoryStore } from "../../../store/historyStore";
+import { dataMapping } from "../../../utils/dataMapping";
 
 const AnalyticsPage = () => {
-    const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-    const [isCorrect, setIsCorrect] = useState(false);
-    const [parsedData, setParsedData] = useState<object | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const abortControllerRef = useRef<AbortController | null>(null);
+    const {
+        uploadedFile,
+        parsedData,
+        status,
+        setUploadedFile,
+        setParsedData,
+        setStatus,
+    } = useAnalyticsStore();
+    const { addResult } = useHistoryStore();
 
-    const dataMapping: Record<string, DataMappingItem> = {
-        total_spend_galactic: {
-            label: "общие расходы в галактических кредитах",
-            type: "number",
-        },
-        less_spent_civ: {
-            label: "цивилизация с минимальными расходами",
-            type: "string",
-        },
-        rows_affected: {
-            label: "количество обработанных записей",
-            type: "number",
-        },
-        big_spent_at: {
-            label: "день года с максимальными расходами",
-            type: "date",
-        },
-        less_spent_at: {
-            label: "день года с минимальными расходами",
-            type: "date",
-        },
-        big_spent_value: {
-            label: "максимальная сумма расходов за день",
-            type: "number",
-        },
-        big_spent_civ: {
-            label: "цивилизация с максимальными расходами",
-            type: "string",
-        },
-        average_spend_galactic: {
-            label: "средние расходы в галактических кредитах",
-            type: "number",
-        },
-    };
+    useEffect(() => {
+        document.title = "CSV Аналитик";
+    }, []);
 
     useEffect(() => {
         if (parsedData) {
@@ -56,73 +28,83 @@ const AnalyticsPage = () => {
         }
     }, [parsedData]);
 
+    useEffect(() => {
+        if (uploadedFile && status === "idle") {
+            setStatus("uploaded");
+        }
+        if (!uploadedFile) {
+            setStatus("idle");
+        }
+    }, [uploadedFile]);
+
     const handleSend = async () => {
         if (!uploadedFile) return;
-
-        setIsLoading(true);
-        abortControllerRef.current = new AbortController();
-
+        setStatus("loading");
+        let lastResult: object = {};
+        let finalStatus: "success" | "error" = "success";
         try {
+            if (uploadedFile.type !== "text/csv") {
+                throw new Error("Invalid file type");
+            }
             const formData = new FormData();
             formData.append("file", uploadedFile);
-
             const response = await fetch(
                 "http://127.0.0.1:3000/aggregate?rows=100000",
                 {
                     method: "POST",
                     body: formData,
-                    signal: abortControllerRef.current.signal,
                 }
             );
-
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
             if (!response.body) {
                 throw new Error("Response body is not readable");
             }
-
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
-
             while (true) {
                 const { done, value } = await reader.read();
-
-                if (done) {
-                    break;
-                }
-
+                if (done) break;
                 const chunk = decoder.decode(value, { stream: true });
-
                 try {
                     const result = JSON.parse(chunk);
+                    const hasNull = Object.values(result).some(
+                        (v) => v === null
+                    );
+                    if (hasNull) {
+                        throw new Error("Invalid data");
+                    }
                     setParsedData(result);
-                } catch (parseError) {}
+                    lastResult = result;
+                } catch (error) {
+                    throw new Error("Data process error.");
+                }
             }
-        } catch (error) {
-            if (error instanceof Error && error.name === "AbortError") {
-                console.log("Request was aborted");
-            } else {
-                console.error("Error uploading file:", error);
-            }
+            setStatus("success");
+        } catch (error: any) {
+            setParsedData(null);
+            setStatus("error");
+            finalStatus = "error";
         } finally {
-            setIsLoading(false);
-            abortControllerRef.current = null;
+            if (uploadedFile) {
+                addResult({
+                    ...lastResult,
+                    timestamp: new Date().toISOString(),
+                    fileName: uploadedFile.name,
+                    status: finalStatus,
+                });
+            }
         }
     };
 
     const handleFileSelect = (file: File | null) => {
-        if (!file && abortControllerRef.current) {
-            abortControllerRef.current.abort();
-        }
-
         setUploadedFile(file);
-        if (file) {
-            setIsCorrect(file.type === "text/csv");
-        } else {
-            setIsCorrect(false);
+        if (!file) {
             setParsedData(null);
+            setStatus("idle");
+        } else {
+            setStatus("uploaded");
         }
     };
 
@@ -134,19 +116,16 @@ const AnalyticsPage = () => {
             </p>
             <UploadForm
                 uploadedFile={uploadedFile}
-                isCorrect={isCorrect}
+                status={status}
                 onFileSelect={handleFileSelect}
+                className={styles.uploadForm}
             />
-            {!isLoading && !parsedData && (
-                <button
-                    className={styles.sendButton}
-                    disabled={!isCorrect}
-                    onClick={handleSend}
-                >
+            {status === "uploaded" && (
+                <Button disabled={!uploadedFile} onClick={handleSend}>
                     Отправить
-                </button>
+                </Button>
             )}
-            <DataGrid data={parsedData} dataMapping={dataMapping} />
+            <DataGrid cols={2} data={parsedData} dataMapping={dataMapping} />
         </div>
     );
 };

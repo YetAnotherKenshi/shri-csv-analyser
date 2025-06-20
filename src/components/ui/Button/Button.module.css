@@ -1,0 +1,31 @@
+.button {
+  border: none;
+  padding: 1.25rem 1.7rem;
+  font-size: 2.1rem;
+  border-radius: 1.6rem;
+  font-weight: 600;
+  font-family: "Roboto";
+  letter-spacing: 0.05rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.button:disabled {
+    background-color: #C0C0C0;
+    color: #787878;
+    cursor: default;
+}
+
+.default {
+  background-color: #2AE881;
+  color: #201B10;
+}
+
+.yellow {
+  background-color: #FCE300;
+}
+
+.black {
+  background-color: #201B10;
+  color: #ffffff;
+}

@@ -42,3 +42,8 @@
     align-items: center;
     letter-spacing: 0.05rem;
 }
+
+.active {
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid black;
+}

@@ -1,18 +1,21 @@
 import { useRef, useState } from "react";
 import styles from "./uploadForm.module.css";
-import Delete from "/src/assets/delete.svg";
 import classNames from "classnames";
+import UploadButton from "../../ui/UploadButton/UploadButton";
+import StatusMessage from "../../ui/StatusMessage/StatusMessage";
 
 interface UploadFormProps {
     uploadedFile: File | null;
-    isCorrect: boolean;
+    status: "idle" | "loading" | "error" | "uploaded" | "success";
     onFileSelect: (file: File | null) => void;
+    className?: string;
 }
 
 const UploadForm = ({
     uploadedFile,
-    isCorrect,
+    status,
     onFileSelect,
+    className = "",
 }: UploadFormProps) => {
     const [isDragActive, setIsDragActive] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -32,7 +35,6 @@ const UploadForm = ({
         e.preventDefault();
         e.stopPropagation();
         setIsDragActive(true);
-        console.log(1);
     };
 
     const handleDragLeave = (e: React.DragEvent) => {
@@ -58,35 +60,67 @@ const UploadForm = ({
         }
     };
 
+    const getUploadButtonVariant = () => {
+        switch (status) {
+            case "success":
+                return "green";
+            case "error":
+                return "orange";
+            case "loading":
+                return "purple";
+            case "uploaded":
+                return "purple";
+            default:
+                return "purple";
+        }
+    };
+
+    const getStatusMessageVariant = () => {
+        switch (status) {
+            case "error":
+                return "error";
+            default:
+                return "default";
+        }
+    };
+
+    const getStatusMessageText = () => {
+        switch (status) {
+            case "error":
+                return "упс, не то...";
+            case "loading":
+                return "идёт парсинг файла";
+            case "success":
+                return "готово!";
+            case "uploaded":
+                return "файл загружен!";
+            default:
+                return "";
+        }
+    };
+
     return uploadedFile ? (
         <div
-            className={classNames(styles.uploadForm, styles.uploaded, {
-                [styles.wrongBorder]: !isCorrect,
-            })}
+            className={classNames(
+                styles.uploadForm,
+                styles.uploaded,
+                {
+                    [styles.wrongBorder]: status === "error",
+                },
+                className
+            )}
         >
             <div className={styles.uploadCenter}>
-                <div className={styles.buttonBlock}>
-                    <div
-                        className={classNames(styles.uploadFile, {
-                            [styles.wrong]: !isCorrect,
-                        })}
-                    >
-                        {uploadedFile.name}
-                    </div>
-                    <button
-                        className={styles.deleteButton}
-                        onClick={() => onFileSelect(null)}
-                    >
-                        <img src={Delete} alt="Delete file" />
-                    </button>
-                </div>
-                <p
-                    className={classNames(styles.statusMessage, {
-                        [styles.statusMessageError]: !isCorrect,
-                    })}
+                <UploadButton
+                    variant={getUploadButtonVariant()}
+                    onDelete={() => onFileSelect(null)}
+                    loading={status === "loading"}
                 >
-                    {!isCorrect ? "упс, не то..." : "файл загружен!"}
-                </p>
+                    {uploadedFile.name}
+                </UploadButton>
+                <StatusMessage variant={getStatusMessageVariant()}>
+                    {getStatusMessageText()}
+                </StatusMessage>
             </div>
         </div>
     ) : (
@@ -102,16 +136,14 @@ const UploadForm = ({
             <div className={styles.uploadCenter}>
                 <input
                     type="file"
+                    accept=".csv"
                     ref={fileInputRef}
                     onChange={handleFileSelect}
                     style={{ display: "none" }}
                 />
-                <button
-                    className={styles.uploadButton}
-                    onClick={handleButtonClick}
-                >
+                <UploadButton onClick={handleButtonClick}>
                     Загрузить файл
-                </button>
+                </UploadButton>
                 <p className={styles.statusMessage}>или перетащите сюда</p>
             </div>
         </div>
