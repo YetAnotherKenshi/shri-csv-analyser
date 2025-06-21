@@ -1,101 +1,36 @@
-import { useEffect, useState } from "react";
 import Button from "../../ui/Button/Button";
 import UploadButton from "../../ui/UploadButton/UploadButton";
 import StatusMessage from "../../ui/StatusMessage/StatusMessage";
 import styles from "./generatorPage.module.css";
-import type { Status } from "../../../types/analytics";
+import {
+    getGeneratorButtonText,
+    getGeneratorStatusMessageText,
+    getStatusMessageVariant,
+    getUploadButtonVariant,
+} from "../../../utils/statusMappings";
+import { useGeneratorStore } from "../../../store/generatorStore";
+import { generateReport } from "../../../services/generatorService";
 
 const GeneratorPage = () => {
-    const [status, setStatus] = useState<Status>("idle");
+    const { status, setStatus } = useGeneratorStore();
 
     const handleGenerate = async () => {
         setStatus("loading");
 
         try {
-            const response = await fetch(
-                "http://127.0.0.1:3000/report?size=0.01&withError=on",
-                { method: "GET" }
-            );
-
-            if (response.ok) {
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "generated_report.csv";
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
-                setStatus("success");
-            } else {
-                setStatus("error");
-            }
-        } catch (error) {
+            const size = Math.random() * (0.2 - 0.01) + 0.01;
+            const maxSpend =
+                Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
+            await generateReport(size, maxSpend);
+            setStatus("success");
+        } catch {
             setStatus("error");
-            console.error(error);
         }
     };
 
     const handleDelete = () => {
         setStatus("idle");
     };
-
-    const getUploadButtonVariant = () => {
-        switch (status) {
-            case "success":
-                return "green";
-            case "error":
-                return "orange";
-            case "loading":
-                return "purple";
-            default:
-                return "purple";
-        }
-    };
-
-    const getUploadButtonText = () => {
-        switch (status) {
-            case "success":
-                return "Done!";
-            case "error":
-                return "Ошибка";
-            case "loading":
-                return "";
-            default:
-                return "";
-        }
-    };
-
-    const getUploadButtonSubText = () => {
-        switch (status) {
-            case "success":
-                return "файл сгенерирован!";
-            case "error":
-                return "упс, не то...";
-            case "loading":
-                return "идёт процесс генерации";
-            default:
-                return "";
-        }
-    };
-
-    const getStatusMessageVariant = () => {
-        switch (status) {
-            case "success":
-                return "default";
-            case "error":
-                return "error";
-            case "loading":
-                return "default";
-            default:
-                return "default";
-        }
-    };
-
-    useEffect(() => {
-        document.title = "CSV Генератор";
-    }, []);
 
     const getUploadButtonClassName = () => {
         if (status === "success" || status === "error") {
@@ -112,18 +47,18 @@ const GeneratorPage = () => {
             {status !== "idle" ? (
                 <>
                     <UploadButton
-                        variant={getUploadButtonVariant()}
+                        variant={getUploadButtonVariant(status)}
                         loading={status === "loading"}
                         onDelete={handleDelete}
                         className={getUploadButtonClassName()}
                     >
-                        {getUploadButtonText()}
+                        {getGeneratorButtonText(status)}
                     </UploadButton>
                     <StatusMessage
                         className={styles.status}
-                        variant={getStatusMessageVariant()}
+                        variant={getStatusMessageVariant(status)}
                     >
-                        {getUploadButtonSubText()}
+                        {getGeneratorStatusMessageText(status)}
                     </StatusMessage>
                 </>
             ) : (

@@ -3,10 +3,10 @@ import type { Status } from "../types/analytics";
 
 interface AnalyticsState {
     uploadedFile: File | null;
-    parsedData: any;
+    parsedData: object | null;
     status: Status;
     setUploadedFile: (file: File | null) => void;
-    setParsedData: (data: any) => void;
+    setParsedData: (data: object | null) => void;
     setStatus: (status: Status) => void;
 }
 

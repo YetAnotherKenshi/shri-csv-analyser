@@ -5,11 +5,9 @@ import Modal from "../../ui/Modal/Modal";
 import { useHistoryStore } from "../../../store/historyStore";
 import Button from "../../ui/Button/Button";
 import { useNavigate } from "react-router-dom";
-import Icon from "../../ui/Icon/Icon";
 import type { AnalyticsResult } from "../../../types/analytics";
-import { formatDate } from "../../../utils/format";
 import { dataMapping } from "../../../utils/dataMapping";
-import classNames from "classnames";
+import HistoryItem from "../../layout/HistoryItem/HistoryItem";
 
 const HistoryPage = () => {
     const { results, deleteResult, clear } = useHistoryStore();
@@ -30,51 +28,23 @@ const HistoryPage = () => {
                 <p className={styles.title}>Нет истории анализа</p>
             ) : (
                 results.map((result, idx) => (
-                    <div className={styles.historyRow} key={idx}>
-                        <div
-                            className={classNames(styles.historyItem, {
-                                [styles.disabled]: result.status === "error",
-                            })}
-                            onClick={() => handleItemClick(result)}
-                        >
-                            <div>
-                                <Icon name="file" />
-                                {result.fileName}
-                            </div>
-                            <div>{formatDate(new Date(result.timestamp))}</div>
-                            <div
-                                className={classNames({
-                                    [styles.dim]: result.status === "error",
-                                })}
-                            >
-                                Обработан успешно
-                                <Icon name="smile" />
-                            </div>
-                            <div
-                                className={classNames({
-                                    [styles.dim]: result.status === "success",
-                                })}
-                            >
-                                Не удалось обработать
-                                <Icon name="sad" />
-                            </div>
-                        </div>
-                        <button
-                            onClick={() => deleteResult(idx)}
-                            className={styles.deleteButton}
-                        >
-                            <Icon name="bin" />
-                        </button>
-                    </div>
+                    <HistoryItem
+                        key={idx}
+                        result={result}
+                        onClick={() => handleItemClick(result)}
+                        onDelete={() => deleteResult(idx)}
+                    />
                 ))
             )}
             <div className={styles.buttonBlock}>
                 <Button onClick={() => navigate("/generator")}>
                     Сгенерировать больше
                 </Button>
-                <Button onClick={() => clear()} variant="black">
-                    Очистить всё
-                </Button>
+                {results.length > 0 && (
+                    <Button onClick={() => clear()} variant="black">
+                        Очистить всё
+                    </Button>
+                )}
             </div>
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 {selectedResult && (

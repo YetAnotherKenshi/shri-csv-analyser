@@ -3,6 +3,11 @@ import styles from "./uploadForm.module.css";
 import classNames from "classnames";
 import UploadButton from "../../ui/UploadButton/UploadButton";
 import StatusMessage from "../../ui/StatusMessage/StatusMessage";
+import {
+    getStatusMessageVariant,
+    getUploadButtonVariant,
+    getUploadStatusMessageText,
+} from "../../../utils/statusMappings";
 
 interface UploadFormProps {
     uploadedFile: File | null;
@@ -60,45 +65,6 @@ const UploadForm = ({
         }
     };
 
-    const getUploadButtonVariant = () => {
-        switch (status) {
-            case "success":
-                return "green";
-            case "error":
-                return "orange";
-            case "loading":
-                return "purple";
-            case "uploaded":
-                return "purple";
-            default:
-                return "purple";
-        }
-    };
-
-    const getStatusMessageVariant = () => {
-        switch (status) {
-            case "error":
-                return "error";
-            default:
-                return "default";
-        }
-    };
-
-    const getStatusMessageText = () => {
-        switch (status) {
-            case "error":
-                return "упс, не то...";
-            case "loading":
-                return "идёт парсинг файла";
-            case "success":
-                return "готово!";
-            case "uploaded":
-                return "файл загружен!";
-            default:
-                return "";
-        }
-    };
-
     return uploadedFile ? (
         <div
             className={classNames(
@@ -112,14 +78,14 @@ const UploadForm = ({
         >
             <div className={styles.uploadCenter}>
                 <UploadButton
-                    variant={getUploadButtonVariant()}
+                    variant={getUploadButtonVariant(status)}
                     onDelete={() => onFileSelect(null)}
                     loading={status === "loading"}
                 >
                     {uploadedFile.name}
                 </UploadButton>
-                <StatusMessage variant={getStatusMessageVariant()}>
-                    {getStatusMessageText()}
+                <StatusMessage variant={getStatusMessageVariant(status)}>
+                    {getUploadStatusMessageText(status)}
                 </StatusMessage>
             </div>
         </div>

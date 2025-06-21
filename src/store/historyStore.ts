@@ -1,12 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export interface AnalyticsResult {
-    fileName: string;
-    timestamp: string;
-    status: "error" | "success";
-    error?: string;
-}
+import type { AnalyticsResult } from "../types/analytics";
 
 interface HistoryState {
     results: AnalyticsResult[];
