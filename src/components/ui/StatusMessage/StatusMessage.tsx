@@ -11,7 +11,7 @@ interface StatusMessageProps
 const StatusMessage: React.FC<StatusMessageProps> = ({
     children,
     variant = "default",
-    className = "",
+    className,
     ...props
 }) => {
     const statusMessageClasses = classNames(

@@ -14,7 +14,7 @@ export const useHistoryStore = create<HistoryState>()(
         (set) => ({
             records: [],
             addRecord: (record) =>
-                set((state) => ({ records: [...state.records, record] })),
+                set((state) => ({ records: [record, ...state.records] })),
             deleteRecord: (idx) =>
                 set((state) => ({
                     records: state.records.filter((_, i) => i !== idx),

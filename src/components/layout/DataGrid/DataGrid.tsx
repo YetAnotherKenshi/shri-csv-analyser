@@ -9,6 +9,7 @@ interface DataGridProps {
     dataMapping: Record<string, DataMappingItem>;
     cols?: number;
     variant?: "default" | "pink";
+    className?: string;
 }
 
 const DataGrid = ({
@@ -16,10 +17,11 @@ const DataGrid = ({
     dataMapping,
     cols = Object.keys(dataMapping).length,
     variant = "default",
+    className,
 }: DataGridProps) => {
     return (
         <div
-            className={styles.dataGrid}
+            className={classNames(styles.dataGrid, className)}
             style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
         >
             {data &&

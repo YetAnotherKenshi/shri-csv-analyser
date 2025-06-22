@@ -8,6 +8,7 @@ import { dataMapping } from "../../../utils/dataMapping";
 import { processFile } from "../../../services/analyticsService";
 import type { AnalyticsResult } from "../../../types/analytics";
 import type { HistoryRecordStatus } from "../../../types/history";
+import { useEffect } from "react";
 
 const AnalyticsPage = () => {
     const {
@@ -22,12 +23,6 @@ const AnalyticsPage = () => {
 
     const handleSend = async () => {
         if (!uploadedFile) return;
-
-        if (uploadedFile.type !== "text/csv") {
-            setParsedData(null);
-            setStatus("error");
-            return;
-        }
 
         setStatus("loading");
         let lastResult: AnalyticsResult = {};
@@ -65,6 +60,16 @@ const AnalyticsPage = () => {
         }
     };
 
+    useEffect(() => {
+        if (!uploadedFile) return;
+
+        if (uploadedFile.type !== "text/csv") {
+            setParsedData(null);
+            setStatus("error");
+            return;
+        }
+    }, [uploadedFile]);
+
     return (
         <div className={styles.page}>
             <p className={styles.title}>
@@ -82,7 +87,12 @@ const AnalyticsPage = () => {
                     Отправить
                 </Button>
             )}
-            <DataGrid cols={2} data={parsedData} dataMapping={dataMapping} />
+            <DataGrid
+                cols={2}
+                data={parsedData}
+                dataMapping={dataMapping}
+                className={styles.dataGrid}
+            />
             {!parsedData && (
                 <p className={styles.footer}>
                     Здесь

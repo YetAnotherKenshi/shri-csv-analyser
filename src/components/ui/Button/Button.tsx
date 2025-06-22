@@ -10,7 +10,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Button: React.FC<ButtonProps> = ({
     children,
     variant = "default",
-    className = "",
+    className,
     ...props
 }) => {
     const buttonClasses = classNames(styles.button, styles[variant], className);
