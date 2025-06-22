@@ -1,5 +1,5 @@
 export function formatValue(
-    value: number | string,
+    value: number | string | undefined,
     type: "number" | "date" | "string"
 ): string {
     switch (type) {

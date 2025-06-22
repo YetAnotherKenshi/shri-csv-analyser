@@ -1,9 +1,10 @@
 import React from "react";
 import styles from "./Button.module.css";
 import classNames from "classnames";
+import type { ButtonVariant } from "../../../types/ui";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: "default" | "yellow" | "black";
+    variant?: ButtonVariant;
 }
 
 const Button: React.FC<ButtonProps> = ({

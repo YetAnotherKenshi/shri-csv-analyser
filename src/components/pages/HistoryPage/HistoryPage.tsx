@@ -5,34 +5,35 @@ import Modal from "../../ui/Modal/Modal";
 import { useHistoryStore } from "../../../store/historyStore";
 import Button from "../../ui/Button/Button";
 import { useNavigate } from "react-router-dom";
-import type { AnalyticsResult } from "../../../types/analytics";
 import { dataMapping } from "../../../utils/dataMapping";
 import HistoryItem from "../../layout/HistoryItem/HistoryItem";
+import type { HistoryRecord } from "../../../types/history";
 
 const HistoryPage = () => {
-    const { results, deleteResult, clear } = useHistoryStore();
+    const { records, deleteRecord, clear } = useHistoryStore();
 
-    const [selectedResult, setSelectedResult] =
-        useState<AnalyticsResult | null>(null);
+    const [selectedResult, setSelectedResult] = useState<HistoryRecord | null>(
+        null
+    );
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
-    const handleItemClick = (result: AnalyticsResult) => {
+    const handleItemClick = (result: HistoryRecord) => {
         setSelectedResult(result);
         setIsModalOpen(true);
     };
 
     return (
         <div className={styles.page}>
-            {results.length === 0 ? (
+            {records.length === 0 ? (
                 <p className={styles.title}>Нет истории анализа</p>
             ) : (
-                results.map((result, idx) => (
+                records.map((result, idx) => (
                     <HistoryItem
                         key={idx}
                         result={result}
                         onClick={() => handleItemClick(result)}
-                        onDelete={() => deleteResult(idx)}
+                        onDelete={() => deleteRecord(idx)}
                     />
                 ))
             )}
@@ -40,7 +41,7 @@ const HistoryPage = () => {
                 <Button onClick={() => navigate("/generator")}>
                     Сгенерировать больше
                 </Button>
-                {results.length > 0 && (
+                {records.length > 0 && (
                     <Button onClick={() => clear()} variant="black">
                         Очистить всё
                     </Button>

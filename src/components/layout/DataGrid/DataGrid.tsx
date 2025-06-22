@@ -2,9 +2,10 @@ import styles from "./dataGrid.module.css";
 import classNames from "classnames";
 import type { DataMappingItem } from "../../../types/data";
 import { formatValue } from "../../../utils/format";
+import type { AnalyticsResult } from "../../../types/analytics";
 
 interface DataGridProps {
-    data?: object | null;
+    data?: AnalyticsResult | null;
     dataMapping: Record<string, DataMappingItem>;
     cols?: number;
     variant?: "default" | "pink";

@@ -2,10 +2,10 @@ import styles from "./historyPage.module.css";
 import classNames from "classnames";
 import Icon from "../../ui/Icon/Icon";
 import { formatDate } from "../../../utils/format";
-import type { AnalyticsResult } from "../../../types/analytics";
+import type { HistoryRecord } from "../../../types/history";
 
 interface HistoryItemProps {
-    result: AnalyticsResult;
+    result: HistoryRecord;
     onClick: () => void;
     onDelete: () => void;
 }

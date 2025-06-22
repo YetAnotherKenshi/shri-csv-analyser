@@ -1,12 +1,12 @@
 import { create } from "zustand";
-import type { Status } from "../types/analytics";
+import type { AnalyticsResult, Status } from "../types/analytics";
 
 interface AnalyticsState {
     uploadedFile: File | null;
-    parsedData: object | null;
+    parsedData: AnalyticsResult | null;
     status: Status;
     setUploadedFile: (file: File | null) => void;
-    setParsedData: (data: object | null) => void;
+    setParsedData: (data: AnalyticsResult | null) => void;
     setStatus: (status: Status) => void;
 }
 

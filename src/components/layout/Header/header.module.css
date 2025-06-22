@@ -1,5 +1,4 @@
 .header {
-    /* height: 160px; */
     padding: 2.75rem;
     display: flex;
     align-items: center;
@@ -22,8 +21,6 @@
     align-items: center;
     gap: 0.75rem;
 }
-
-/* .rightSide */
 
 .logo {
     width: 16rem;

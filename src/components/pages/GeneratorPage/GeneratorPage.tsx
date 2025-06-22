@@ -7,7 +7,7 @@ import {
     getGeneratorStatusMessageText,
     getStatusMessageVariant,
     getUploadButtonVariant,
-} from "../../../utils/statusMappings";
+} from "../../../utils/uiMappings";
 import { useGeneratorStore } from "../../../store/generatorStore";
 import { generateReport } from "../../../services/generatorService";
 

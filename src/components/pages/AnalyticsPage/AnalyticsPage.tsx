@@ -6,6 +6,8 @@ import { useAnalyticsStore } from "../../../store/analyticsStore";
 import { useHistoryStore } from "../../../store/historyStore";
 import { dataMapping } from "../../../utils/dataMapping";
 import { processFile } from "../../../services/analyticsService";
+import type { AnalyticsResult } from "../../../types/analytics";
+import type { HistoryRecordStatus } from "../../../types/history";
 
 const AnalyticsPage = () => {
     const {
@@ -16,24 +18,35 @@ const AnalyticsPage = () => {
         setParsedData,
         setStatus,
     } = useAnalyticsStore();
-    const { addResult } = useHistoryStore();
+    const { addRecord } = useHistoryStore();
 
     const handleSend = async () => {
         if (!uploadedFile) return;
+
+        if (uploadedFile.type !== "text/csv") {
+            setParsedData(null);
+            setStatus("error");
+            return;
+        }
+
         setStatus("loading");
-        let lastResult: object = {};
-        let finalStatus: "success" | "error" = "success";
+        let lastResult: AnalyticsResult = {};
+        let finalStatus: HistoryRecordStatus = "success";
         try {
-            lastResult = await processFile(uploadedFile, (result) => {
-                setParsedData(result);
-            });
+            lastResult = await processFile(
+                uploadedFile,
+                (result) => {
+                    setParsedData(result);
+                },
+                10000
+            );
             setStatus("success");
         } catch {
             setParsedData(null);
             setStatus("error");
             finalStatus = "error";
         } finally {
-            addResult({
+            addRecord({
                 ...lastResult,
                 timestamp: new Date().toISOString(),
                 fileName: uploadedFile.name,
@@ -64,12 +77,19 @@ const AnalyticsPage = () => {
                 onFileSelect={handleFileSelect}
                 className={styles.uploadForm}
             />
-            {status === "uploaded" && (
+            {["uploaded", "idle"].includes(status) && (
                 <Button disabled={!uploadedFile} onClick={handleSend}>
                     Отправить
                 </Button>
             )}
             <DataGrid cols={2} data={parsedData} dataMapping={dataMapping} />
+            {!parsedData && (
+                <p className={styles.footer}>
+                    Здесь
+                    <br />
+                    появятся хайлайты
+                </p>
+            )}
         </div>
     );
 };

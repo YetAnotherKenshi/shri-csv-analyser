@@ -7,7 +7,7 @@ import {
     getStatusMessageVariant,
     getUploadButtonVariant,
     getUploadStatusMessageText,
-} from "../../../utils/statusMappings";
+} from "../../../utils/uiMappings";
 
 interface UploadFormProps {
     uploadedFile: File | null;
@@ -95,9 +95,13 @@ const UploadForm = ({
             onDragLeave={handleDragLeave}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
-            className={classNames(styles.uploadForm, {
-                [styles.active]: isDragActive,
-            })}
+            className={classNames(
+                styles.uploadForm,
+                {
+                    [styles.active]: isDragActive,
+                },
+                className
+            )}
         >
             <div className={styles.uploadCenter}>
                 <input

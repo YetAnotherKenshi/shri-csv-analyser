@@ -2,10 +2,11 @@ import React from "react";
 import styles from "./UploadButton.module.css";
 import classNames from "classnames";
 import Icon from "../Icon/Icon";
+import type { UploadButtonVariant } from "../../../types/ui";
 
 interface UploadButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: "default" | "purple" | "green" | "orange";
+    variant?: UploadButtonVariant;
     onDelete?: () => void;
     children?: React.ReactNode;
     loading?: boolean;

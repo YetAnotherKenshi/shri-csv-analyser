@@ -1,10 +1,11 @@
 import React from "react";
 import styles from "./StatusMessage.module.css";
 import classNames from "classnames";
+import type { StatusMessageVariant } from "../../../types/ui";
 
 interface StatusMessageProps
     extends React.HTMLAttributes<HTMLParagraphElement> {
-    variant?: "default" | "error";
+    variant?: StatusMessageVariant;
 }
 
 const StatusMessage: React.FC<StatusMessageProps> = ({
