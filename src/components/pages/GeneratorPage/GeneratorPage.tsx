@@ -18,10 +18,7 @@ const GeneratorPage = () => {
         setStatus("loading");
 
         try {
-            const size = Math.random() * (0.2 - 0.01) + 0.01;
-            const maxSpend =
-                Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
-            await generateReport(size, maxSpend);
+            await generateReport(0.05, 5000);
             setStatus("success");
         } catch {
             setStatus("error");
