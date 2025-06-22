@@ -1,4 +1,4 @@
 export interface DataMappingItem {
-    label: string;
-    type: "string" | "number" | "date";
+  label: string;
+  type: 'string' | 'number' | 'date';
 }

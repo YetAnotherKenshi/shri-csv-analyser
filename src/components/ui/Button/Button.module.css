@@ -4,28 +4,30 @@
   font-size: 2.1rem;
   border-radius: 1.6rem;
   font-weight: 600;
-  font-family: "Roboto";
+  font-family: 'Roboto';
   letter-spacing: 0.05rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .button:disabled {
-    background-color: #C0C0C0;
-    color: #787878;
-    cursor: default;
+  background-color: #c0c0c0;
+  color: #787878;
+  cursor: default;
 }
 
 .default {
-  background-color: #2AE881;
-  color: #201B10;
+  background-color: #2ae881;
+  color: #201b10;
 }
 
 .yellow {
-  background-color: #FCE300;
+  background-color: #fce300;
 }
 
 .black {
-  background-color: #201B10;
+  background-color: #201b10;
   color: #ffffff;
 }

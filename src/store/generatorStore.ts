@@ -1,12 +1,12 @@
-import { create } from "zustand";
-import type { Status } from "../types/analytics";
+import { create } from 'zustand';
+import type { Status } from '../types/analytics';
 
 interface GeneratorStore {
-    status: Status;
-    setStatus: (status: Status) => void;
+  status: Status;
+  setStatus: (status: Status) => void;
 }
 
 export const useGeneratorStore = create<GeneratorStore>((set) => ({
-    status: "idle",
-    setStatus: (status) => set({ status }),
+  status: 'idle',
+  setStatus: (status) => set({ status }),
 }));

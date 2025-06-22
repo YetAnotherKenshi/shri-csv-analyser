@@ -1,40 +1,42 @@
 .uploadForm {
-    background-color: #EACDFF;
-    width: 100%;
-    height: 14.9rem;
-    border-radius: 2.5rem;
-    display: grid;
-    place-items: center;
-    transition: background-color 0.2s ease, color 0.2s ease;
+  background-color: #eacdff;
+  width: 100%;
+  height: 14.9rem;
+  border-radius: 2.5rem;
+  display: grid;
+  place-items: center;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .active {
-    background-color: #D4FAE6;
+  background-color: #d4fae6;
 }
 
 .uploaded {
-    background-color: #FCE2FF;
-    border: 1px solid #201B10;
+  background-color: #fce2ff;
+  border: 1px solid #201b10;
 }
 
 .uploadCenter {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .wrongBorder {
-    border: 1px solid #FF5F00;
+  border: 1px solid #ff5f00;
 }
 
 .statusMessage {
-    margin: 0 0 0 0;
-    font-size: 2.2rem;
-    letter-spacing: -0.02rem;
-    color: #201B10;
+  margin: 0 0 0 0;
+  font-size: 2.2rem;
+  letter-spacing: -0.02rem;
+  color: #201b10;
 }
 
 .statusMessageError {
-    color: #FF5F00;
+  color: #ff5f00;
 }

@@ -1,20 +1,20 @@
 .page {
-    margin: 2.1rem 2.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  margin: 2.1rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title {
-    margin: 0;
-    font-size: 1.875rem;
-    margin-bottom: 1rem;
+  margin: 0;
+  font-size: 1.875rem;
+  margin-bottom: 1rem;
 }
 
 .status {
-    margin-top: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .label {
-    min-width: 0;
+  min-width: 0;
 }

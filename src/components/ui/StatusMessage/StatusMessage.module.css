@@ -1,10 +1,10 @@
 .statusMessage {
-    margin: 0 0 0 0;
-    font-size: 2.2rem;
-    letter-spacing: -0.02rem;
-    color: #201B10;
+  margin: 0 0 0 0;
+  font-size: 2.2rem;
+  letter-spacing: -0.02rem;
+  color: #201b10;
 }
 
 .error {
-    color: #FF5F00;
+  color: #ff5f00;
 }
